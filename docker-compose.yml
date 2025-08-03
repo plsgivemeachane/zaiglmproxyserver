@@ -1,0 +1,26 @@
+services:
+  glm-server:
+    build: .
+    container_name: openai-glm-server
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - PORT=${PORT}
+      - GLM_API_TOKEN=${GLM_API_TOKEN}
+      - FLASK_RUN_PORT=${PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./conversations:/app/conversations
+    restart: unless-stopped
+    networks:
+      - glm-network
+
+networks:
+  glm-network:
+    driver: bridge
+
+volumes:
+  logs:
+  conversations:
