@@ -19,8 +19,8 @@ A Python server that provides OpenAI-compatible API endpoints for GLM (ChatGLM) 
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
-cd QwenAPIThinggy
+git clone https://github.com/plsgivemeachane/zaiglmproxyserver
+cd zaiglmproxyserver
 ```
 
 2. Install dependencies:
