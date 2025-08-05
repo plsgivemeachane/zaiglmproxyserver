@@ -58,6 +58,10 @@ cp .env.example .env
 ```bash
 GLM_API_TOKEN=your_glm_api_token_here
 PORT=8976
+
+# Optional: Configure request timeout (default: 120 seconds)
+# Increase this if you're experiencing timeout issues
+GLM_TIMEOUT=120
 ```
 
 ## Usage
@@ -295,6 +299,12 @@ Response:
    - Ensure the server is running
    - Check if you're using the correct port
    - Verify firewall settings
+
+4. **Request timeout errors:**
+   - Increase the `GLM_TIMEOUT` value in your `.env` file (default: 120 seconds)
+   - For complex queries, try setting `GLM_TIMEOUT=300` (5 minutes)
+   - Check your internet connection stability
+   - The GLM API server might be overloaded - try again later
 
 
 ## Requirements

@@ -8,6 +8,7 @@ services:
       - PORT=${PORT}
       - GLM_API_TOKEN=${GLM_API_TOKEN}
       - FLASK_RUN_PORT=${PORT}
+      - GLM_TIMEOUT=${GLM_TIMEOUT}
     env_file:
       - .env
     volumes:

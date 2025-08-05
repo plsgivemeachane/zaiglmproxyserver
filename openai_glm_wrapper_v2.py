@@ -19,9 +19,14 @@ logger = logging.getLogger(__name__)
 class OpenAIToGLMWrapperV2:
     """OpenAI-compatible wrapper for GLM API that converts requests to GLM format."""
     
-    def __init__(self, base_url: str = "https://open.bigmodel.cn/api/paas/v4/chat/completions"):
-        """Initialize the GLM wrapper."""
-        self.glm_client = GLMAPIClient(base_url)
+    def __init__(self, base_url: str = "https://open.bigmodel.cn/api/paas/v4/chat/completions", timeout: int = 120):
+        """Initialize the GLM wrapper.
+        
+        Args:
+            base_url: Base URL for the GLM API (deprecated, kept for compatibility)
+            timeout: Request timeout in seconds (default: 120)
+        """
+        self.glm_client = GLMAPIClient(timeout=timeout)
         
     def set_authorization(self, token: str):
         """Set the authorization token for GLM API."""
@@ -135,7 +140,7 @@ class OpenAIToGLMWrapperV2:
                                 {
                                     "index": 0,
                                     "delta": {
-                                        "content": "Think..."
+                                        "content": ""
                                     },
                                     "finish_reason": None
                                 }
@@ -157,7 +162,7 @@ class OpenAIToGLMWrapperV2:
                             }
                         }
                         
-                        # yield f"data: {json.dumps(thinking_chunk)}\n\n"
+                        yield f"data: {json.dumps(thinking_chunk)}\n\n"
                     
                     # Capture content from answer phase (and handle edge cases)
                     if phase == "answer" and content:

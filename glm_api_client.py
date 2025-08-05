@@ -9,11 +9,17 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class GLMAPIClient:
-    def __init__(self, authorization_token: str = None):
-        """Initialize the GLM API client with authorization token."""
+    def __init__(self, authorization_token: str = None, timeout: int = 120):
+        """Initialize the GLM API client with authorization token and timeout.
+        
+        Args:
+            authorization_token: Bearer token for API authentication
+            timeout: Request timeout in seconds (default: 120)
+        """
         self.base_url = "https://chat.z.ai/api/chat/completions"
         # self.base_url = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
         self.authorization_token = authorization_token
+        self.timeout = timeout
         self.session = requests.Session()
         
         # GLM API Client initialized
@@ -88,7 +94,7 @@ class GLMAPIClient:
                 json=payload,
                 stream=True,
                 headers={"referrer": f"https://chat.z.ai/c/{chat_id}"},
-                timeout=30
+                timeout=self.timeout
             )
             
             response.raise_for_status()
@@ -146,6 +152,10 @@ class GLMAPIClient:
                     except json.JSONDecodeError:
                         continue
             
+        except requests.exceptions.Timeout as e:
+            raise Exception(f"GLM API request timed out after {self.timeout} seconds. The server may be overloaded or the request is taking too long to process: {e}")
+        except requests.exceptions.ConnectionError as e:
+            raise Exception(f"GLM API connection failed. Please check your internet connection: {e}")
         except requests.exceptions.RequestException as e:
             raise Exception(f"GLM API request failed: {e}")
     

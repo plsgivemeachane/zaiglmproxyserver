@@ -171,8 +171,8 @@ class OpenAIToGLMWrapper:
                     full_content += "</think>"
                 
                 # Close answer tag if still open at the end
-                if answer_started:
-                    full_content += "</answer>"
+                # if answer_started:
+                #     full_content += "</answer>"
                 
                 # Calculate realistic fake token usage for streaming
                 try:
@@ -258,8 +258,8 @@ class OpenAIToGLMWrapper:
                 full_content += "</think>"
             
             # Close answer tag if still open at the end
-            if answer_started:
-                full_content += "</answer>"
+            # if answer_started:
+            #     full_content += "</answer>"
             
             # Calculate realistic fake token usage with error handling
             try:
