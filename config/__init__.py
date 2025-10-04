@@ -1,0 +1,1 @@
+# Configuration package - contains application configuration

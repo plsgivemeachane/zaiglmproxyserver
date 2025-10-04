@@ -25,6 +25,13 @@ COPY glm_api_client.py .
 COPY openai_glm_wrapper.py .
 COPY openai_glm_wrapper_v2.py .
 COPY openai_glm_server.py .
+COPY glm_hyper_think.py .
+COPY reasoning_module.py .
+COPY token_rotator.py .
+COPY xml_tool_parser.py .
+
+# Copy token file
+COPY token.json .
 
 # Create directory for logs
 RUN mkdir -p /app/logs
