@@ -6,32 +6,15 @@ import logging
 from dotenv import load_dotenv
 from openai_glm_wrapper import OpenAIToGLMWrapper
 from openai_glm_wrapper_v2 import OpenAIToGLMWrapperV2
+
+# Add this import if SUPPORTED_MODELS exists in v2 wrapper
+from openai_glm_wrapper_v2 import SUPPORTED_MODELS as SUPPORTED_MODELS_V2
 from glm_hyper_think import GLMHyperthinkWrapper
 from typing import Dict, Any, List
 import threading
 from collections import defaultdict
 import random
 from token_rotator import TokenRotator, load_tokens_from_file, initialize_token_rotator_from_config
-
-
-def load_tokens_from_file(filename: str = 'token.json') -> List[str]:
-    """Load tokens from JSON file."""
-    try:
-        with open(filename, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            tokens = data.get('tokens', [])
-            logger.info(f"Loaded {len(tokens)} tokens from {filename}")
-            return tokens
-    except FileNotFoundError:
-        logger.error(f"Token file {filename} not found")
-        return []
-    except json.JSONDecodeError:
-        logger.error(f"Invalid JSON in token file {filename}")
-        return []
-    except Exception as e:
-        logger.error(f"Error loading tokens from {filename}: {e}")
-        return []
-
 
 # Load environment variables from .env file
 load_dotenv()
@@ -189,8 +172,8 @@ def chat_completions_v3():
         if not messages:
             return jsonify({"error": "No messages provided"}), 400
         
-        # Get current token from rotator
-        current_token = token_rotator.get_current_token()
+        # Get next token from rotator
+        current_token = token_rotator.get_next_token()
         if not current_token:
             return jsonify({"error": "No available tokens"}), 503
         
@@ -279,7 +262,7 @@ def list_models_v2():
         "object": "list",
         "data": [
             {
-                "id": "0727-360B-API",
+                "id": model_id,
                 "object": "model",
                 "created": 1677610602,
                 "owned_by": "glm-api",
@@ -292,7 +275,7 @@ def list_models_v2():
                     "model_type": "chat",
                     "context_length": 8192
                 }
-            }
+            } for model_id in SUPPORTED_MODELS_V2
         ]
     }
     return Response(json.dumps(models_data), mimetype='application/json; charset=utf-8')

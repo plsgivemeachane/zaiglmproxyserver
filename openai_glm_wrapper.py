@@ -6,13 +6,17 @@ from typing import Dict, Any, List, Optional, Generator
 from glm_api_client import GLMAPIClient
 from werkzeug.exceptions import BadGateway, GatewayTimeout
 
+# Make supported models global for import/use elsewhere
+SUPPORTED_MODELS = [
+    "0727-360B-API",
+    "GLM-4-6-API-V1"
+]
+
 class OpenAIToGLMWrapper:
     """OpenAI-compatible wrapper for GLM API that converts requests to GLM format."""
 
-    SUPPORTED_MODELS = [
-        "0727-360B-API",
-        "GLM-4-6-API-V1"
-    ]
+    # Reference the global model list
+    SUPPORTED_MODELS = SUPPORTED_MODELS
     
     def __init__(self, timeout: int = 120, base_url: str = "https://api.glmmind.com"):
         """Initialize the GLM wrapper.

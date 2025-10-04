@@ -10,6 +10,11 @@ from werkzeug.exceptions import BadGateway, GatewayTimeout, TooManyRequests
 # Create logger for this module
 logger = logging.getLogger(__name__)
 
+SUPPORTED_MODELS = [
+    "0727-360B-API",
+    "GLM-4-6-API-V1"
+]
+
 class OpenAIToGLMWrapperV2:
     """OpenAI-compatible wrapper for GLM API that converts requests to GLM format."""
     
@@ -246,9 +251,9 @@ class OpenAIToGLMWrapperV2:
                                     }
                                 ],
                                 "usage": {
-                                    "prompt_tokens": prompt_tokens,
+                                    "prompt_tokens": 0,  # No prompt tokens counted for thinking
                                     "completion_tokens": 0,  # Don't count thinking token
-                                    "total_tokens": prompt_tokens
+                                    "total_tokens": 0  # No tokens used during thinking
                                 },
                                 "pricing": {
                                     "input_token_price": 0.00003,
